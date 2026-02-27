@@ -1,4 +1,4 @@
-from test.conftest import BASE_URL
+from test.conftest import BASE_URL, set_test_user, get_test_user
 
 import pytest
 import requests
@@ -30,13 +30,17 @@ def test_user_registration():
     # check username
     assert response.json().get("user").get("username") == user_data["username"]
 
+    set_test_user(user_data["username"])
 
 def test_duplicate_user():
+
+    user = get_test_user()
+
     user_data = {
-      "username": "John",
+      "username": user, #"John",
       "password": "init1234"
     }
-
+    print("username")
     response = requests.post(
         f"{BASE_URL}/api/auth/register",
         json = user_data
@@ -46,10 +50,14 @@ def test_duplicate_user():
     assert response.status_code == 400
 
 def test_login_returns_jwt_token():
+
+    user = get_test_user()
+
     user_data = {
-        "username": "user_1771598004140",
+        "username": user, #"user_1771598004140",
         "password": "init1234"
     }
+
     response = requests.post(
         url = f"{BASE_URL}/api/auth/login",
         json = user_data
@@ -119,7 +127,7 @@ def test_rsvp_public(is_public):
     }
 
     response = requests.post(
-        f"{BASE_URL}/api/rsvps/event/5",
+        f"{BASE_URL}/api/rsvps/event/2",
         json = rsvp
     )
 
@@ -129,7 +137,7 @@ def test_rsvp_public(is_public):
     else:
         assert response.status_code == 200 # for rsvp update
     # Check if Event ID matched
-    assert response.json().get("event_id") == 5
+    assert response.json().get("event_id") == 2
 
 def test_create_event_no_auth():
     """Testing event creation without access token"""
@@ -156,7 +164,7 @@ def test_rsvp_without_token():
     }
 
     response = requests.post(
-        f"{BASE_URL}/api/rsvps/event/4", # 4 is protected
+        f"{BASE_URL}/api/rsvps/event/1", # 4 is protected
         json = rsvp
     )
 
