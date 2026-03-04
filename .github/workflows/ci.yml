@@ -26,7 +26,25 @@ jobs:
           docker run -d -p 5001:5001 --name events-api-test events-api:latest
           sleep 5
           curl http://localhost:5001/api/health || exit 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.13'
           
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run : |
+          pytest -v
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop events-api-test
+          docker rm events-api-test
 
 # on: [push, pull_request]
 
