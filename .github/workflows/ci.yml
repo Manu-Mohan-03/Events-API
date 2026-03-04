@@ -1,0 +1,38 @@
+name: Events-API CI # The name of the process
+
+on:
+  push: # Trigger: Run whenever code is pushed
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # Run on a fresh Linux machine in the cloud
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+# on: [push, pull_request]
+
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.11'
+#
+#      - name: Install Dependencies
+#        run: |
+#          pip install -r requirements.txt
+#          pip install pytest
+#
+#      - name: Run Tests
+#        run: pytest # This is where your /test folder gets used!
