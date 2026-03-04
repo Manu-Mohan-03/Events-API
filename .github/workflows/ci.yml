@@ -24,6 +24,9 @@ jobs:
       - name: Run Container
         run: |
           docker run -d -p 5001:5001 --name events-api-test events-api:latest
+          sleep 5
+          curl http://localhost:5001/api/health || exit 1
+          
 
 # on: [push, pull_request]
 
