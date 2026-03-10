@@ -67,6 +67,27 @@ jobs:
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOYMENT }}
 
+      - name: Wait for render deploy
+        run: sleep 30
+
+      - name: Check health endpoint
+        run: |
+          for i in {1..20}; do
+            echo "Checking health endpoint..."
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.RENDER_BASE_URL }}/api/health)
+
+            if [ "$STATUS" = "200" ]; then
+              echo "Service is healthy!"
+              exit 0
+            fi
+
+            echo "Not ready yet (status: $STATUS). Retrying in 10s..."
+            sleep 10
+          done
+
+          echo "Health check failed after multiple attempts."
+          exit 1
+
 # on: [push, pull_request]
 
 #jobs:
