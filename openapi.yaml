@@ -86,6 +86,27 @@ paths:
               example:
                 status: healthy
 
+  /api/dev2prod:
+    get:
+      tags:
+        - Production Sanity Test
+      summary: Smoke Test
+      description: Check if the API is running
+      security: []
+      responses:
+        '200':
+          description: CD successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Successful
+              example:
+                status: Successful
+
   /api/auth/register:
     post:
       tags:
