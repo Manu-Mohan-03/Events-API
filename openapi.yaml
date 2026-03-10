@@ -12,7 +12,7 @@ info:
 servers:
   - url: http://localhost:5001
     description: Local development server
-  - url: https://api.example.com
+  - url: https://events-api-kryl.onrender.com
     description: Production server
 
 tags:

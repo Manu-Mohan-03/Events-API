@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest # Run on a fresh Linux machine in the cloud
+    environment: Prod # Added during CD process
 
     steps:
       - name: Checkout code
@@ -45,6 +46,26 @@ jobs:
         run: |
           docker stop events-api-test
           docker rm events-api-test
+
+      - name: login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag Docker Image
+        run: |
+          docker tag events-api:latest nemo0303d/events-api:latest
+          docker tag events-api:latest nemo0303d/events-api:${{ github.sha }}
+
+      - name: Push image to Docker Hub
+        run: |
+          docker push nemo0303d/events-api:latest
+          nemo0303d/events-api:${{ github.sha }}
+
+      - name: Trigger render Re-deploy
+        run: |
+          curl -X POST ${{ RENDER_DEPLOYMENT }}
 
 # on: [push, pull_request]
 
