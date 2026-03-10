@@ -55,12 +55,12 @@ jobs:
 
       - name: Tag Docker Image
         run: |
-          docker tag events-api:latest nemo0303d/events-api:latest
+          docker tag events-api:latest nemo0303d/events-api:v3
           docker tag events-api:latest nemo0303d/events-api:${{ github.sha }}
 
       - name: Push image to Docker Hub
         run: |
-          docker push nemo0303d/events-api:latest
+          docker push nemo0303d/events-api:v3
           docker push nemo0303d/events-api:${{ github.sha }}
 
       - name: Trigger render Re-deploy
