@@ -61,7 +61,7 @@ jobs:
       - name: Push image to Docker Hub
         run: |
           docker push nemo0303d/events-api:latest
-          nemo0303d/events-api:${{ github.sha }}
+          docker push nemo0303d/events-api:${{ github.sha }}
 
       - name: Trigger render Re-deploy
         run: |
