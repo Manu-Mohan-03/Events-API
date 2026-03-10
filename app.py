@@ -59,6 +59,7 @@ def create_app():
             },
             'endpoints': {
                 'health': '/api/health',
+                'dev2prod': '/api/dev2prod',
                 'auth': {
                     'register': '/api/auth/register',
                     'login': '/api/auth/login'
